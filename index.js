@@ -2,8 +2,7 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 const path = require("path");
-const generateMarkdown = require("./utils/generateMarkdown");
-const {circle, square, triangle, hexagon} = require("./library/shapes");
+const {Circle, Square, Triangle} = require("./library/shapes");
 
 class svg{
     constructor(){
@@ -11,7 +10,14 @@ class svg{
         this.shapeElement = ''
     }
     render(){
-        return <svg version="_______"></svg>
+        return `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="300" height="200">${this.shapeElement}${this.textElement}</svg>`
+    }
+    setTextElement(text,color){
+        this.textElement = `<text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}">${text}</text>`
+    }
+    setShapeElement(shape){
+        this.shapeElement = shape.render()
+
     }
 }
 
@@ -20,37 +26,50 @@ class svg{
 const questions = [
     {
         type: "input",
-        name: "characters",
+        name: "text",
         message: "What three characters would like for your logo?",
     },
     {
         type: "input",
-        name: "text color",
-        message: "Please enter the color keyword (OR a hexxidecimal number) for the text",
+        name: "textColor",
+        message: "Please enter the color keyword (OR a hexadecimal number) for the text",
     },
     {
         type: "checkbox",
         name: "shape",
         message: "Please select the shape for your logo.",
-        choices: ["circle", "square", "hexagon", "_____", ]
+        choices: ["circle", "square", "triangle", ]
     },
     {
         type: "input",
-        name: "shape color",
-        message: "Please enter the color keyword (OR a hexxidecimal number) for the shape",
+        name: "shapeColor",
+        message: "Please enter the color keyword (OR a hexxidecimal number) for the shape color",
     },
 ];
 
     // Create a function to write SVG file
-function writeToFile(fileName, data) {
-    fs.writeFileSync(fileName, data)
+function writeSvgFile(fileName, data) {
+    let logo = ''
+    if(data.shape === "circle"){
+        logo = new Circle()
+        logo.setTextColor(data.textColor)
+        logo.setText(data.text)
+        logo.setShapeColor(data.shapeColor)
+    }
+    fs.writeFileSync(fileName, logo.render(), (err) => {
+        if (err) {
+            console.error('Error writing file:', err);
+        } else {
+            console.log('SVG file created successfully.');
+        }
+        });
 }
 
 // Create a function to initialize app
 function init() {
     inquirer.prompt(questions).then((responses) => {
         console.log("Creating SVG File...");
-        writeToFile("./dist/logo.svg", generateMarkdown({ ...responses }));
+        writeSvgFile("./dist/logo.svg", responses);
     });
 }
 

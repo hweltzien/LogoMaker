@@ -1,27 +1,38 @@
-class shape{
+class Shape{
     constructor(){
-        this.color=''
+        this.textColor=''
+        this.text=''
+        this.shapeColor=''
     }
-    setColor(color){
-        this.color=(color);
+    setTextColor(textColor){
+        this.textColor=(textColor);
     }
-}
-
-class circle extends shape{
-    render(){
-        return  `<circle cx="50" cy="50" r="100" width="100" height="100" fill="${this.color}"/>`
+    setText(text){
+        this.text=(text);
     }
-}
-class square extends shape{
-    render(){
-        return `<rect x="10" y="10" width="80" height="80" fill="${this.color}"/>`
+    setshapeColor(shapeColor){
+        this.shapeColor=(shapeColor);
     }
 }
 
-class triangle extends shape{
+class Circle extends Shape{
+    constructor(){
+        super()
+    }
     render(){
-        return ``
+        return `<svg width="100" height="100"><circle cx="50" cy="50" r="40" fill="${this.shapeColor}"/></svg>`;
+    }
+}
+class Square extends Shape{
+    render(){
+        return `<rect x="10" y="10" width="80" height="80" fill="${this.shapeColor}"/>`
     }
 }
 
-module.exports = {circle, square, triangle}
+class Triangle extends Shape{
+    render(){
+        return `<polygon points="100,10 10,190 190,190" fill="${this.shapeColor}" width="200" height="200"/>`
+    }
+}
+
+module.exports = {Circle, Square, Triangle}
