@@ -10,7 +10,7 @@ class Shape{
     setText(text){
         this.text=(text);
     }
-    setshapeColor(shapeColor){
+    setShapeColor(shapeColor){
         this.shapeColor=(shapeColor);
     }
 }
@@ -20,18 +20,36 @@ class Circle extends Shape{
         super()
     }
     render(){
-        return `<svg width="100" height="100"><circle cx="50" cy="50" r="40" fill="${this.shapeColor}"/></svg>`;
+        return `
+        <svg width="300" height="200">
+        <circle cx="150" cy="100" r="80" fill="${this.shapeColor}"/>
+        <text x="50%" y="50%" fill="${this.textColor}" font-size="70" text-anchor="middle" alignment-baseline="middle" font-family="monospace">${this.text}</text>
+        </svg>`;
     }
 }
 class Square extends Shape{
+    constructor(){
+        super()
+    }
     render(){
-        return `<rect x="10" y="10" width="80" height="80" fill="${this.shapeColor}"/>`
+        return `
+        <svg width="300" height="200">
+        <rect x="50" y="10" width="200" height="200" fill="${this.shapeColor}"/>
+         <text x="50%" y="50%" fill="${this.textColor}" font-size="80" text-anchor="middle" alignment-baseline="middle" font-family="monospace">${this.text}</text>
+        </svg>`;
     }
 }
 
 class Triangle extends Shape{
+    constructor(){
+        super()
+    }
     render(){
-        return `<polygon points="100,10 10,190 190,190" fill="${this.shapeColor}" width="200" height="200"/>`
+        return `
+        <svg width="300" height="200">
+        <polygon points="150,10 10,300 250,200" fill="${this.shapeColor}"/>
+        <text x="50%" y="63%" fill="${this.textColor}" font-size="50" text-anchor="middle" alignment-baseline="middle" font-family="monospace">${this.text}</text>
+        </svg>`;
     }
 }
 

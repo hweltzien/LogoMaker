@@ -2,20 +2,20 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
 const path = require("path");
-const {Circle, Square, Triangle} = require("./library/shapes");
+const { Circle, Square, Triangle } = require("./library/shapes");
 
-class svg{
-    constructor(){
+class svg {
+    constructor() {
         this.textElement = ''
         this.shapeElement = ''
     }
-    render(){
+    render() {
         return `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="300" height="200">${this.shapeElement}${this.textElement}</svg>`
     }
-    setTextElement(text,color){
+    setTextElement(text, color) {
         this.textElement = `<text x="150" y="125" font-size="60" text-anchor="middle" fill="${color}">${text}</text>`
     }
-    setShapeElement(shape){
+    setShapeElement(shape) {
         this.shapeElement = shape.render()
 
     }
@@ -35,10 +35,10 @@ const questions = [
         message: "Please enter the color keyword (OR a hexadecimal number) for the text",
     },
     {
-        type: "checkbox",
+        type: "list",
         name: "shape",
         message: "Please select the shape for your logo.",
-        choices: ["circle", "square", "triangle", ]
+        choices: ["circle", "square", "triangle"]
     },
     {
         type: "input",
@@ -47,22 +47,34 @@ const questions = [
     },
 ];
 
-    // Create a function to write SVG file
+// Create a function to write SVG file
 function writeSvgFile(fileName, data) {
     let logo = ''
-    if(data.shape === "circle"){
+    if (data.shape === "circle") {
         logo = new Circle()
-        logo.setTextColor(data.textColor)
-        logo.setText(data.text)
-        logo.setShapeColor(data.shapeColor)
+
     }
-    fs.writeFileSync(fileName, logo.render(), (err) => {
+    if (data.shape === "square") {
+        logo = new Square()
+
+    }
+    if (data.shape === "triangle") {
+        logo = new Triangle()
+
+    }
+
+    logo.setTextColor(data.textColor)
+    logo.setText(data.text)
+    logo.setShapeColor(data.shapeColor)
+    
+    fs.writeFile(fileName, logo.render(), (err) => {
+        
         if (err) {
             console.error('Error writing file:', err);
         } else {
             console.log('SVG file created successfully.');
         }
-        });
+    });
 }
 
 // Create a function to initialize app
